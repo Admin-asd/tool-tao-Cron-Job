@@ -1,0 +1,619 @@
+<!doctype html>
+<!-- Vị trí file: wp-content/gb-tools/dev-tools/cong-cu-tao-cron-job.html -->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Công cụ tạo Cron Job online - Cron Expression Generator</title>
+<meta name="description" content="Tạo biểu thức Cron Job nhanh chóng với chế độ Wizard và Chế độ chuyên gia, cài đặt sẵn phổ biến, giải thích lịch trình dễ hiểu, xem lần chạy tiếp theo và dòng thời gian trực quan.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.11"></script>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: Roboto, ui-sans-serif, system-ui, sans-serif;
+    --color-primary: #fdca1e; --color-primary-hover: #e8b008; --color-primary-soft: #fffbeb;
+    --color-primary-ink: #9c6406; --color-ink: #0f172a; --color-neutral: #e2e8f0;
+  }
+</style>
+</head>
+<body class="bg-white font-sans text-ink antialiased">
+<main class="mx-auto max-w-4xl p-4 sm:p-6 space-y-6">
+
+  <!-- 1. Cài đặt sẵn nhanh -->
+  <div class="border-2 border-dashed border-amber-300 bg-primary-soft/50 rounded-2xl p-5 space-y-4">
+    <div class="text-xs font-bold text-primary-ink flex items-center gap-1.5">
+      <span>&#9889;</span>
+      <span>Cài đặt sẵn nhanh - Nhấp để tải một lịch trình phổ biến</span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-center">
+      <button type="button" onclick="applyPreset('* * * * *')" class="rounded-xl border border-amber-300 bg-white hover:border-primary hover:bg-primary-soft p-3 transition-all cursor-pointer shadow-2xs space-y-1">
+        <div class="text-lg">&#9201;</div>
+        <div class="text-xs font-bold text-primary-ink">Mỗi phút</div>
+        <div class="text-[11px] font-mono text-slate-600">* * * * *</div>
+      </button>
+
+      <button type="button" onclick="applyPreset('*/5 * * * *')" class="rounded-xl border border-amber-300 bg-white hover:border-primary hover:bg-primary-soft p-3 transition-all cursor-pointer shadow-2xs space-y-1">
+        <div class="text-lg">&#128260;</div>
+        <div class="text-xs font-bold text-primary-ink">Mỗi 5 phút</div>
+        <div class="text-[11px] font-mono text-slate-600">*/5 * * * *</div>
+      </button>
+
+      <button type="button" onclick="applyPreset('0 * * * *')" class="rounded-xl border border-amber-300 bg-white hover:border-primary hover:bg-primary-soft p-3 transition-all cursor-pointer shadow-2xs space-y-1">
+        <div class="text-lg">&#128336;</div>
+        <div class="text-xs font-bold text-primary-ink">Mỗi giờ</div>
+        <div class="text-[11px] font-mono text-slate-600">0 * * * *</div>
+      </button>
+
+      <button type="button" onclick="applyPreset('0 0 * * *')" class="rounded-xl border border-amber-300 bg-white hover:border-primary hover:bg-primary-soft p-3 transition-all cursor-pointer shadow-2xs space-y-1">
+        <div class="text-lg">&#127769;</div>
+        <div class="text-xs font-bold text-primary-ink">Hàng ngày nửa đêm</div>
+        <div class="text-[11px] font-mono text-slate-600">0 0 * * *</div>
+      </button>
+
+      <button type="button" onclick="applyPreset('0 9 * * 1-5')" class="rounded-xl border border-amber-300 bg-white hover:border-primary hover:bg-primary-soft p-3 transition-all cursor-pointer shadow-2xs space-y-1">
+        <div class="text-lg">&#128188;</div>
+        <div class="text-xs font-bold text-primary-ink">Ngày trong tuần 9 AM</div>
+        <div class="text-[11px] font-mono text-slate-600">0 9 * * 1-5</div>
+      </button>
+
+      <button type="button" onclick="applyPreset('0 0 1 * *')" class="rounded-xl border border-amber-300 bg-white hover:border-primary hover:bg-primary-soft p-3 transition-all cursor-pointer shadow-2xs space-y-1">
+        <div class="text-lg">&#128197;</div>
+        <div class="text-xs font-bold text-primary-ink">Hàng tháng ngày 1</div>
+        <div class="text-[11px] font-mono text-slate-600">0 0 1 * *</div>
+      </button>
+
+      <button type="button" onclick="applyPreset('0 0 * * 0')" class="rounded-xl border border-amber-300 bg-white hover:border-primary hover:bg-primary-soft p-3 transition-all cursor-pointer shadow-2xs space-y-1">
+        <div class="text-lg">&#128467;</div>
+        <div class="text-xs font-bold text-primary-ink">Mỗi Chủ Nhật</div>
+        <div class="text-[11px] font-mono text-slate-600">0 0 * * 0</div>
+      </button>
+
+      <button type="button" onclick="applyPreset('0 0 1 1 *')" class="rounded-xl border border-amber-300 bg-white hover:border-primary hover:bg-primary-soft p-3 transition-all cursor-pointer shadow-2xs space-y-1">
+        <div class="text-lg">&#127881;</div>
+        <div class="text-xs font-bold text-primary-ink">Hàng năm 1 thg 1</div>
+        <div class="text-[11px] font-mono text-slate-600">0 0 1 1 *</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. Khung cấu hình chính (Wizard / Chuyên gia + Lệnh + Nút Tạo) -->
+  <div class="bg-white border border-neutral rounded-2xl p-6 shadow-xs space-y-6">
+
+    <!-- Chuyển đổi Chế độ Wizard / Chế độ chuyên gia -->
+    <div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-slate-100 border border-neutral">
+      <button type="button" id="btnWizard" onclick="switchMode('wizard')" class="py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-white border-2 border-primary text-primary-ink shadow-2xs cursor-pointer transition-all flex items-center justify-center gap-2">
+        <span>&#129497;</span>
+        <span>Chế độ Wizard</span>
+      </button>
+      <button type="button" id="btnExpert" onclick="switchMode('expert')" class="py-3 px-4 rounded-xl font-bold text-xs sm:text-sm text-slate-600 hover:text-ink cursor-pointer transition-all flex items-center justify-center gap-2">
+        <span>&#9000;</span>
+        <span>Chế độ chuyên gia</span>
+      </button>
+    </div>
+
+    <!-- Chế độ Wizard: 5 ô Phút, Giờ, Ngày, Tháng, Thứ -->
+    <div id="wizardPanel" class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+      <div class="space-y-1.5">
+        <div class="w-9 h-9 mx-auto rounded-xl bg-primary text-ink font-bold flex items-center justify-center shadow-2xs">&#9200;</div>
+        <div class="text-xs font-bold uppercase text-ink">PHÚT</div>
+        <div class="text-[11px] text-slate-400">0-59</div>
+        <input type="text" id="fMinute" value="0" oninput="syncFromWizard()" class="w-full rounded-xl border border-neutral p-2.5 text-center font-mono font-bold text-base text-ink outline-none focus:border-primary bg-white">
+      </div>
+
+      <div class="space-y-1.5">
+        <div class="w-9 h-9 mx-auto rounded-xl bg-primary text-ink font-bold flex items-center justify-center shadow-2xs">&#128336;</div>
+        <div class="text-xs font-bold uppercase text-ink">GIỜ</div>
+        <div class="text-[11px] text-slate-400">0-23</div>
+        <input type="text" id="fHour" value="0" oninput="syncFromWizard()" class="w-full rounded-xl border border-neutral p-2.5 text-center font-mono font-bold text-base text-ink outline-none focus:border-primary bg-white">
+      </div>
+
+      <div class="space-y-1.5">
+        <div class="w-9 h-9 mx-auto rounded-xl bg-primary text-ink font-bold flex items-center justify-center shadow-2xs">&#128197;</div>
+        <div class="text-xs font-bold uppercase text-ink">NGÀY</div>
+        <div class="text-[11px] text-slate-400">1-31</div>
+        <input type="text" id="fDom" value="1" oninput="syncFromWizard()" class="w-full rounded-xl border border-neutral p-2.5 text-center font-mono font-bold text-base text-ink outline-none focus:border-primary bg-white">
+      </div>
+
+      <div class="space-y-1.5">
+        <div class="w-9 h-9 mx-auto rounded-xl bg-primary text-ink font-bold flex items-center justify-center shadow-2xs">&#128467;</div>
+        <div class="text-xs font-bold uppercase text-ink">THÁNG</div>
+        <div class="text-[11px] text-slate-400">1-12</div>
+        <input type="text" id="fMonth" value="1" oninput="syncFromWizard()" class="w-full rounded-xl border border-neutral p-2.5 text-center font-mono font-bold text-base text-ink outline-none focus:border-primary bg-white">
+      </div>
+
+      <div class="space-y-1.5 col-span-2 sm:col-span-1">
+        <div class="w-9 h-9 mx-auto rounded-xl bg-primary text-ink font-bold flex items-center justify-center shadow-2xs">&#128203;</div>
+        <div class="text-xs font-bold uppercase text-ink">THỨ</div>
+        <div class="text-[11px] text-slate-400">0-6 (CN=0)</div>
+        <input type="text" id="fDow" value="*" oninput="syncFromWizard()" class="w-full rounded-xl border border-neutral p-2.5 text-center font-mono font-bold text-base text-ink outline-none focus:border-primary bg-white">
+      </div>
+    </div>
+
+    <!-- Chế độ chuyên gia: Nhập trực tiếp chuỗi 5 trường -->
+    <div id="expertPanel" class="hidden space-y-2">
+      <input type="text" id="expertExpr" value="0 0 1 1 *" oninput="syncFromExpert()" class="w-full rounded-xl border border-neutral p-4 text-center font-mono font-bold text-xl tracking-widest text-ink outline-none focus:border-primary bg-white">
+      <div class="grid grid-cols-5 text-center text-xs text-slate-400 font-medium pt-1">
+        <span>phút</span>
+        <span>giờ</span>
+        <span>ngày</span>
+        <span>tháng</span>
+        <span>thứ</span>
+      </div>
+    </div>
+
+    <!-- Lệnh / Đường dẫn tập lệnh -->
+    <div class="space-y-2">
+      <label for="cronCommand" class="flex items-center gap-1.5 text-xs font-bold text-ink">
+        <span>&#9881;</span>
+        <span>Lệnh / Đường dẫn tập lệnh</span>
+      </label>
+      <input type="text" id="cronCommand" value="/usr/bin/script.sh" oninput="generateCronJob()" class="w-full rounded-xl border border-neutral p-3 font-mono text-sm text-ink outline-none focus:border-primary bg-white">
+    </div>
+
+    <!-- Nút Tạo Cron Job -->
+    <button type="button" onclick="generateCronJob()" class="w-full min-h-12 rounded-xl bg-primary px-6 font-bold text-sm text-ink hover:bg-primary-hover shadow-xs cursor-pointer transition-colors flex items-center justify-center gap-2">
+      <span>&#128640;</span>
+      <span>Tạo Cron Job</span>
+    </button>
+
+  </div>
+
+  <!-- 3. Kết quả Cron Job Đã Tạo -->
+  <div id="outputSection" class="bg-white border border-neutral rounded-2xl p-6 shadow-xs space-y-5">
+    <div class="flex items-center gap-2 font-bold text-base text-ink">
+      <span class="w-5 h-5 rounded bg-emerald-600 text-white text-xs flex items-center justify-center">&#10003;</span>
+      <span>Cron Job Đã Tạo</span>
+    </div>
+
+    <!-- Khối Biểu thức Cron (Nền tối nổi bật) -->
+    <div class="rounded-2xl bg-slate-900 border-2 border-emerald-500/80 p-5 space-y-4 text-white">
+      <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">BIỂU THỨC CRON</div>
+      <div id="outCronExpr" class="text-2xl sm:text-3xl font-mono font-bold tracking-widest text-emerald-400">0 0 1 1 *</div>
+      <button type="button" onclick="copyText(document.getElementById('outCronExpr').textContent, this, 'Sao chép biểu thức')" class="w-full rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 py-2.5 px-4 text-xs font-bold text-slate-200 cursor-pointer transition-colors flex items-center justify-center gap-2">
+        <span>&#128203;</span>
+        <span>Sao chép biểu thức</span>
+      </button>
+    </div>
+
+    <!-- Khối Dòng Crontab Đầy Đủ -->
+    <div class="rounded-2xl bg-slate-900 border-2 border-emerald-500/80 p-5 space-y-4 text-white">
+      <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">DÒNG CRONTAB ĐẦY ĐỦ</div>
+      <div id="outFullLine" class="text-lg sm:text-xl font-mono font-bold text-emerald-400 break-all">0 0 1 1 * /usr/bin/script.sh</div>
+      <button type="button" onclick="copyText(document.getElementById('outFullLine').textContent, this, 'Sao chép toàn bộ dòng')" class="w-full rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 py-2.5 px-4 text-xs font-bold text-slate-200 cursor-pointer transition-colors flex items-center justify-center gap-2">
+        <span>&#128203;</span>
+        <span>Sao chép toàn bộ dòng</span>
+      </button>
+    </div>
+
+    <!-- Lịch trình (ngôn ngữ dễ hiểu) -->
+    <div class="rounded-xl bg-emerald-50/70 border border-emerald-400 p-4 space-y-1.5">
+      <div class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+        <span>&#128221;</span>
+        <span>Lịch trình (ngôn ngữ dễ hiểu)</span>
+      </div>
+      <div id="outHumanSchedule" class="text-sm sm:text-base font-bold text-emerald-700">
+        Vào lúc nửa đêm (00:00), vào ngày 1 của tháng, trong Tháng 1
+      </div>
+    </div>
+
+    <!-- Các lần chạy tiếp theo -->
+    <div class="rounded-xl bg-slate-50 border border-neutral p-4 space-y-2.5">
+      <div class="text-xs font-bold text-ink">Các lần chạy dự kiến tiếp theo (từ thời điểm hiện tại)</div>
+      <ul id="nextRunsList" class="space-y-1.5 text-xs font-mono text-slate-700">
+        <!-- Render JS -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. Dòng Thời Gian Lịch Trình Trực Quan -->
+  <div class="bg-white border border-neutral rounded-2xl p-6 shadow-xs space-y-5">
+    <div class="font-bold text-base text-ink flex items-center gap-2">
+      <span>&#128202;</span>
+      <span>Dòng Thời Gian Lịch Trình Trực Quan</span>
+    </div>
+
+    <!-- Phút (hiển thị mỗi 5 phút) -->
+    <div class="space-y-2">
+      <div class="text-xs font-bold text-ink flex items-center gap-1.5">
+        <span>&#9200;</span>
+        <span>Phút (hiển thị mỗi 5 phút)</span>
+      </div>
+      <div id="gridMinutes" class="flex flex-wrap gap-1.5"></div>
+    </div>
+
+    <!-- Giờ (0-23) -->
+    <div class="space-y-2">
+      <div class="text-xs font-bold text-ink flex items-center gap-1.5">
+        <span>&#128336;</span>
+        <span>Giờ (0-23)</span>
+      </div>
+      <div id="gridHours" class="flex flex-wrap gap-1.5"></div>
+    </div>
+
+    <!-- Ngày trong tháng (1-31) -->
+    <div class="space-y-2">
+      <div class="text-xs font-bold text-ink flex items-center gap-1.5">
+        <span>&#128197;</span>
+        <span>Ngày trong tháng (1-31)</span>
+      </div>
+      <div id="gridDom" class="flex flex-wrap gap-1.5"></div>
+    </div>
+
+    <!-- Tháng -->
+    <div class="space-y-2">
+      <div class="text-xs font-bold text-ink flex items-center gap-1.5">
+        <span>&#128467;</span>
+        <span>Tháng</span>
+      </div>
+      <div id="gridMonths" class="flex flex-wrap gap-1.5"></div>
+    </div>
+
+    <!-- Thứ trong tuần -->
+    <div class="space-y-2">
+      <div class="text-xs font-bold text-ink flex items-center gap-1.5">
+        <span>&#128203;</span>
+        <span>Thứ trong tuần</span>
+      </div>
+      <div id="gridDow" class="flex flex-wrap gap-1.5"></div>
+    </div>
+  </div>
+
+  <!-- 5. Tham Khảo Nhanh Cú Pháp Cron -->
+  <div class="bg-white border border-neutral rounded-2xl p-6 shadow-xs space-y-4">
+    <div class="font-bold text-base text-ink flex items-center gap-2">
+      <span>&#128214;</span>
+      <span>Tham Khảo Nhanh Cú Pháp Cron</span>
+    </div>
+
+    <div class="border border-neutral rounded-xl overflow-x-auto">
+      <table class="w-full text-left border-collapse text-xs">
+        <thead>
+          <tr class="border-b border-neutral bg-slate-50 font-bold text-ink">
+            <th class="py-3 px-4">Trường</th>
+            <th class="py-3 px-4">Giá trị cho phép</th>
+            <th class="py-3 px-4">Ký tự đặc biệt</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-neutral text-slate-700">
+          <tr>
+            <td class="py-3 px-4 font-medium text-ink">Phút</td>
+            <td class="py-3 px-4 font-mono">0-59</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-primary-soft border border-amber-200 font-mono font-bold text-primary-ink">* , - /</span></td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-medium text-ink">Giờ</td>
+            <td class="py-3 px-4 font-mono">0-23</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-primary-soft border border-amber-200 font-mono font-bold text-primary-ink">* , - /</span></td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-medium text-ink">Ngày trong tháng</td>
+            <td class="py-3 px-4 font-mono">1-31</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-primary-soft border border-amber-200 font-mono font-bold text-primary-ink">* , - /</span></td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-medium text-ink">Tháng</td>
+            <td class="py-3 px-4 font-mono">1-12 hoặc JAN-DEC</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-primary-soft border border-amber-200 font-mono font-bold text-primary-ink">* , - /</span></td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-medium text-ink">Ngày trong tuần</td>
+            <td class="py-3 px-4 font-mono">0-6 hoặc SUN-SAT</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-primary-soft border border-amber-200 font-mono font-bold text-primary-ink">* , - /</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const MONTH_NAMES_VI = ['', 'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+  const MONTH_SHORT_VI = ['Th1', 'Th2', 'Th3', 'Th4', 'Th5', 'Th6', 'Th7', 'Th8', 'Th9', 'Th10', 'Th11', 'Th12'];
+  const DOW_NAMES_VI = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+  const DOW_SHORT_VI = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+
+  function switchMode(mode) {
+    const btnWiz = document.getElementById('btnWizard');
+    const btnExp = document.getElementById('btnExpert');
+    const wizPanel = document.getElementById('wizardPanel');
+    const expPanel = document.getElementById('expertPanel');
+
+    if (mode === 'wizard') {
+      btnWiz.className = 'py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-white border-2 border-primary text-primary-ink shadow-2xs cursor-pointer transition-all flex items-center justify-center gap-2';
+      btnExp.className = 'py-3 px-4 rounded-xl font-bold text-xs sm:text-sm text-slate-600 hover:text-ink cursor-pointer transition-all flex items-center justify-center gap-2';
+      wizPanel.classList.remove('hidden');
+      expPanel.classList.add('hidden');
+    } else {
+      btnExp.className = 'py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-white border-2 border-primary text-primary-ink shadow-2xs cursor-pointer transition-all flex items-center justify-center gap-2';
+      btnWiz.className = 'py-3 px-4 rounded-xl font-bold text-xs sm:text-sm text-slate-600 hover:text-ink cursor-pointer transition-all flex items-center justify-center gap-2';
+      expPanel.classList.remove('hidden');
+      wizPanel.classList.add('hidden');
+      document.getElementById('expertExpr').value = getWizardExpression();
+    }
+  }
+
+  function getWizardExpression() {
+    const m = (document.getElementById('fMinute').value || '*').trim();
+    const h = (document.getElementById('fHour').value || '*').trim();
+    const dom = (document.getElementById('fDom').value || '*').trim();
+    const mon = (document.getElementById('fMonth').value || '*').trim();
+    const dow = (document.getElementById('fDow').value || '*').trim();
+    return `${m} ${h} ${dom} ${mon} ${dow}`;
+  }
+
+  function syncFromWizard() {
+    document.getElementById('expertExpr').value = getWizardExpression();
+    generateCronJob();
+  }
+
+  function syncFromExpert() {
+    const parts = document.getElementById('expertExpr').value.trim().split(/\s+/);
+    if (parts[0] !== undefined) document.getElementById('fMinute').value = parts[0];
+    if (parts[1] !== undefined) document.getElementById('fHour').value = parts[1];
+    if (parts[2] !== undefined) document.getElementById('fDom').value = parts[2];
+    if (parts[3] !== undefined) document.getElementById('fMonth').value = parts[3];
+    if (parts[4] !== undefined) document.getElementById('fDow').value = parts[4];
+    generateCronJob();
+  }
+
+  function applyPreset(expr) {
+    const parts = expr.split(/\s+/);
+    document.getElementById('fMinute').value = parts[0] || '*';
+    document.getElementById('fHour').value = parts[1] || '*';
+    document.getElementById('fDom').value = parts[2] || '*';
+    document.getElementById('fMonth').value = parts[3] || '*';
+    document.getElementById('fDow').value = parts[4] || '*';
+    document.getElementById('expertExpr').value = expr;
+    generateCronJob();
+  }
+
+  // Phân tích 1 trường cron thành tập các giá trị nguyên hợp lệ
+  function expandCronField(fieldStr, minVal, maxVal, aliasMap = {}) {
+    const set = new Set();
+    if (!fieldStr || fieldStr.trim() === '*') {
+      for (let v = minVal; v <= maxVal; v++) set.add(v);
+      return set;
+    }
+
+    const tokens = fieldStr.trim().toUpperCase().split(',');
+    for (let rawToken of tokens) {
+      let token = rawToken.trim();
+      for (const [k, num] of Object.entries(aliasMap)) {
+        token = token.replace(new RegExp(`\\b${k}\\b`, 'g'), String(num));
+      }
+
+      let step = 1;
+      if (token.includes('/')) {
+        const [rangePart, stepPart] = token.split('/');
+        step = Math.max(1, parseInt(stepPart, 10) || 1);
+        token = rangePart;
+      }
+
+      if (token === '*') {
+        for (let v = minVal; v <= maxVal; v += step) set.add(v);
+      } else if (token.includes('-')) {
+        const [startS, endS] = token.split('-');
+        let start = parseInt(startS, 10);
+        let end = parseInt(endS, 10);
+        if (!isNaN(start) && !isNaN(end)) {
+          if (start === 7 && maxVal === 6) start = 0;
+          if (end === 7 && maxVal === 6) end = 0;
+          start = Math.max(minVal, start);
+          end = Math.min(maxVal, end);
+          for (let v = start; v <= end; v += step) set.add(v);
+        }
+      } else {
+        let val = parseInt(token, 10);
+        if (!isNaN(val)) {
+          if (val === 7 && maxVal === 6) val = 0;
+          if (val >= minVal && val <= maxVal) set.add(val);
+        }
+      }
+    }
+    return set;
+  }
+
+  function describeHumanSchedule(mStr, hStr, domStr, monStr, dowStr) {
+    if (mStr === '*' && hStr === '*' && domStr === '*' && monStr === '*' && dowStr === '*') {
+      return 'Chạy mỗi phút (mỗi giờ, mỗi ngày)';
+    }
+    if (mStr.startsWith('*/') && hStr === '*' && domStr === '*' && monStr === '*' && dowStr === '*') {
+      const n = mStr.slice(2);
+      return `Chạy mỗi ${n} phút một lần`;
+    }
+    if (/^\d+$/.test(mStr) && hStr === '*' && domStr === '*' && monStr === '*' && dowStr === '*') {
+      return `Vào phút thứ ${mStr} của mỗi giờ`;
+    }
+
+    const parts = [];
+    if (/^\d+$/.test(mStr) && /^\d+$/.test(hStr)) {
+      const hh = String(hStr).padStart(2, '0');
+      const mm = String(mStr).padStart(2, '0');
+      if (hh === '00' && mm === '00') {
+        parts.push('Vào lúc nửa đêm (00:00)');
+      } else {
+        parts.push(`Vào lúc ${hh}:${mm}`);
+      }
+    } else {
+      if (mStr !== '*') parts.push(`phút (${mStr})`);
+      if (hStr !== '*') parts.push(`giờ (${hStr})`);
+    }
+
+    if (domStr !== '*') {
+      if (/^\d+$/.test(domStr)) {
+        parts.push(`vào ngày ${domStr} của tháng`);
+      } else {
+        parts.push(`vào các ngày (${domStr}) của tháng`);
+      }
+    }
+
+    if (monStr !== '*') {
+      if (/^\d+$/.test(monStr) && MONTH_NAMES_VI[parseInt(monStr, 10)]) {
+        parts.push(`trong ${MONTH_NAMES_VI[parseInt(monStr, 10)]}`);
+      } else {
+        parts.push(`trong các tháng (${monStr})`);
+      }
+    }
+
+    if (dowStr !== '*') {
+      if (dowStr === '1-5') {
+        parts.push('từ Thứ 2 đến Thứ 6 (ngày làm việc)');
+      } else if (/^\d+$/.test(dowStr)) {
+        const dIdx = parseInt(dowStr, 10) % 7;
+        parts.push(`vào ${DOW_NAMES_VI[dIdx]}`);
+      } else {
+        parts.push(`vào các thứ (${dowStr})`);
+      }
+    }
+
+    return parts.length ? parts.join(', ') : 'Lịch trình tùy chỉnh';
+  }
+
+  function computeNextRuns(mSet, hSet, domSet, monSet, dowSet, count = 5) {
+    const results = [];
+    const now = new Date();
+    const cursor = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes() + 1, 0, 0);
+
+    // Tìm tối đa trong 366 ngày tiếp theo (527,040 phút)
+    let guard = 0;
+    while (results.length < count && guard < 527040) {
+      guard++;
+      const mon = cursor.getMonth() + 1;
+      const dom = cursor.getDate();
+      const dow = cursor.getDay();
+      const hr = cursor.getHours();
+      const min = cursor.getMinutes();
+
+      if (monSet.has(mon) && domSet.has(dom) && dowSet.has(dow) && hSet.has(hr) && mSet.has(min)) {
+        results.push(new Date(cursor.getTime()));
+      }
+      cursor.setMinutes(cursor.getMinutes() + 1);
+    }
+    return results;
+  }
+
+  function renderTimelineGrids(mSet, hSet, domSet, monSet, dowSet) {
+    // Phút mỗi 5 phút (0, 5, 10 ... 55)
+    const minContainer = document.getElementById('gridMinutes');
+    minContainer.innerHTML = '';
+    for (let m = 0; m < 60; m += 5) {
+      const active = mSet.has(m);
+      const pill = document.createElement('span');
+      pill.className = `px-2.5 py-1 rounded-lg text-xs font-mono font-bold ${active ? 'bg-primary text-ink shadow-2xs' : 'bg-slate-100 text-slate-400'}`;
+      pill.textContent = m;
+      minContainer.appendChild(pill);
+    }
+
+    // Giờ (0-23)
+    const hrContainer = document.getElementById('gridHours');
+    hrContainer.innerHTML = '';
+    for (let h = 0; h < 24; h++) {
+      const active = hSet.has(h);
+      const pill = document.createElement('span');
+      pill.className = `w-8 h-8 rounded-lg text-xs font-mono font-bold flex items-center justify-center ${active ? 'bg-primary text-ink shadow-2xs' : 'bg-slate-100 text-slate-400'}`;
+      pill.textContent = h;
+      hrContainer.appendChild(pill);
+    }
+
+    // Ngày trong tháng (1-31)
+    const domContainer = document.getElementById('gridDom');
+    domContainer.innerHTML = '';
+    for (let d = 1; d <= 31; d++) {
+      const active = domSet.has(d);
+      const pill = document.createElement('span');
+      pill.className = `w-8 h-8 rounded-lg text-xs font-mono font-bold flex items-center justify-center ${active ? 'bg-primary text-ink shadow-2xs' : 'bg-slate-100 text-slate-400'}`;
+      pill.textContent = d;
+      domContainer.appendChild(pill);
+    }
+
+    // Tháng (Th1 - Th12)
+    const monContainer = document.getElementById('gridMonths');
+    monContainer.innerHTML = '';
+    for (let m = 1; m <= 12; m++) {
+      const active = monSet.has(m);
+      const pill = document.createElement('span');
+      pill.className = `px-2.5 py-1.5 rounded-lg text-xs font-bold ${active ? 'bg-primary text-ink shadow-2xs' : 'bg-slate-100 text-slate-400'}`;
+      pill.textContent = MONTH_SHORT_VI[m - 1];
+      monContainer.appendChild(pill);
+    }
+
+    // Thứ trong tuần (CN - T7)
+    const dowContainer = document.getElementById('gridDow');
+    dowContainer.innerHTML = '';
+    for (let w = 0; w < 7; w++) {
+      const active = dowSet.has(w);
+      const pill = document.createElement('span');
+      pill.className = `px-3 py-1.5 rounded-lg text-xs font-bold ${active ? 'bg-primary text-ink shadow-2xs' : 'bg-slate-100 text-slate-400'}`;
+      pill.textContent = DOW_SHORT_VI[w];
+      dowContainer.appendChild(pill);
+    }
+  }
+
+  function generateCronJob() {
+    const mStr = (document.getElementById('fMinute').value || '*').trim();
+    const hStr = (document.getElementById('fHour').value || '*').trim();
+    const domStr = (document.getElementById('fDom').value || '*').trim();
+    const monStr = (document.getElementById('fMonth').value || '*').trim();
+    const dowStr = (document.getElementById('fDow').value || '*').trim();
+    const cmd = (document.getElementById('cronCommand').value || '/usr/bin/script.sh').trim();
+
+    const expr = `${mStr} ${hStr} ${domStr} ${monStr} ${dowStr}`;
+    const fullLine = `${expr} ${cmd}`;
+
+    document.getElementById('outCronExpr').textContent = expr;
+    document.getElementById('outFullLine').textContent = fullLine;
+    document.getElementById('outHumanSchedule').textContent = describeHumanSchedule(mStr, hStr, domStr, monStr, dowStr);
+
+    const monthAliases = { JAN: 1, FEB: 2, MAR: 3, APR: 4, MAY: 5, JUN: 6, JUL: 7, AUG: 8, SEP: 9, OCT: 10, NOV: 11, DEC: 12 };
+    const dowAliases = { SUN: 0, MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5, SAT: 6 };
+
+    const mSet = expandCronField(mStr, 0, 59);
+    const hSet = expandCronField(hStr, 0, 23);
+    const domSet = expandCronField(domStr, 1, 31);
+    const monSet = expandCronField(monStr, 1, 12, monthAliases);
+    const dowSet = expandCronField(dowStr, 0, 6, dowAliases);
+
+    const nextRuns = computeNextRuns(mSet, hSet, domSet, monSet, dowSet, 5);
+    const runsUl = document.getElementById('nextRunsList');
+    if (nextRuns.length > 0) {
+      runsUl.innerHTML = nextRuns.map((dt, idx) => {
+        const formatted = dt.toLocaleString('vi-VN', {
+          weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit'
+        });
+        return `<li class="flex items-center gap-2"><span class="text-primary-ink font-bold">#${idx + 1}</span><span>${formatted}</span></li>`;
+      }).join('');
+    } else {
+      runsUl.innerHTML = '<li class="text-slate-400">Không tìm thấy lần chạy phù hợp trong 366 ngày tới.</li>';
+    }
+
+    renderTimelineGrids(mSet, hSet, domSet, monSet, dowSet);
+  }
+
+  async function copyText(text, btnEl, defaultLabel) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    btnEl.innerHTML = `<span>&#10003;</span><span>Đã sao chép!</span>`;
+    setTimeout(() => {
+      btnEl.innerHTML = `<span>&#128203;</span><span>${defaultLabel}</span>`;
+    }, 1800);
+  }
+
+  // Khởi tạo mặc định khi mở trang
+  generateCronJob();
+</script>
+</body>
+</html>
